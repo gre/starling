@@ -199,14 +199,18 @@ class Painter
      *  the render context. */
     public function dispose():Void
     {
+        _stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
         _batchProcessorCurr.dispose();
         _batchProcessorPrev.dispose();
         _batchProcessorSpec.dispose();
 
         if (!_shareContext)
         {
+            for (program in programs)
+                program.dispose();
+
             if (_context != null) _context.dispose(false);
-            sSharedData = new Map();
+            sSharedData.remove(_stage3D);
         }
     }
 
